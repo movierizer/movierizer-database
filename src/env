@@ -1,2 +1,2 @@
 POSTGRES_PASSWORD: movierizer
-POSTGRES_DB: movierizerDatabase
+POSTGRES_DB: movierizer_db
