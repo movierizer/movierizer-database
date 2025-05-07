@@ -1,0 +1,17 @@
+stages: 
+  - package
+
+#{package stage to build the docker image}
+package:
+  image: 
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  stage: package
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - cp $DOCKER_AUTH_CONFIG /kaniko/.docker/config.json
+  script: 
+     - /kaniko/executor 
+        --context "${CI_PROJECT_DIR}" 
+        --dockerfile Dockerfile 
+        --destination "s0nren/movierizer-database:${DATABASE_VERSION}" 

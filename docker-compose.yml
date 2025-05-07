@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16
+    image: s0nren/movierizer-database:${DATABASE_VERSION}
     container_name: movierizer_db
     restart: always
     env_file:
