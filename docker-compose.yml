@@ -1,6 +1,6 @@
 services:
   db:
-    image: s0nren/movierizer-database:${DATABASE_VERSION}
+    image: s0nren/movierizer-database:${DB_VERSION}
     container_name: movierizer_db
     restart: always
     env_file:

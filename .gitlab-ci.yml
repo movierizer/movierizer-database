@@ -14,4 +14,4 @@ package:
      - /kaniko/executor 
         --context "${CI_PROJECT_DIR}" 
         --dockerfile Dockerfile 
-        --destination "s0nren/movierizer-database:${DATABASE_VERSION}" 
+        --destination "s0nren/movierizer-database:${DB_VERSION}" 
