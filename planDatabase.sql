@@ -3,17 +3,17 @@
 CREATE TABLE movies (
     id int PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    originalTitle VARCHAR(255),
+    original_title VARCHAR(255),
     duration INTERVAL,
     country VARCHAR(20),
     budget BIGINT,
-    boxOffice BIGINT, 
-    urlTrailer TEXT,
-    urlPoster TEXT,
+    box_office BIGINT, 
+    url_trailer TEXT,
+    url_poster TEXT,
     screenplay TEXT,
-    releaseDate date,
-    averageRating float CHECK (averageRating >= 0 AND averageRating <= 100),
-    ratingsCount INT DEFAULT 0
+    release_date date,
+    average_rating float CHECK (average_rating >= 0 AND average_rating <= 100),
+    ratings_count INT DEFAULT 0
 );
 
 ----------------User tables---------------
@@ -23,9 +23,11 @@ CREATE TABLE users (
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    userLanguage VARCHAR(20),
-    profilePicture TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_language VARCHAR(20),
+    profile_picture TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tokenTMDB TEXT
 );
 
 ----------------User-ratings tables---------------
@@ -33,11 +35,11 @@ CREATE TABLE users (
 CREATE TABLE user_ratings (
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
-    rating FLOAT CHECK (rating >= 0 AND rating <= 100),
+    rating FLOAT ,
     comment TEXT,
     favorite BOOLEAN,
-    viewingDate DATE,
-    movieStatus VARCHAR(10) CHECK (movieStatus IN ('watched', 'to watch', 'in progress')),
+    viewing_date DATE,
+    movie_status VARCHAR(10) CHECK (movieStatus IN ('watched', 'to watch', 'in progress')),
     rated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, movie_id)
 );
@@ -61,9 +63,9 @@ CREATE TABLE movie_genres (
 
 CREATE TABLE people (
     id SERIAL PRIMARY KEY,
-    firstName VARCHAR(100) NOT NULL,
-    lastName VARCHAR(100) NOT NULL,
-    birthdate DATE,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    birth_date DATE,
     nationality VARCHAR(100)
 );
 
@@ -72,7 +74,7 @@ CREATE TABLE people (
 CREATE TABLE movie_actors (
     movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
     person_id INT REFERENCES people(id) ON DELETE CASCADE,
-    actorRole VARCHAR(100),
+    actor_role VARCHAR(100),
     PRIMARY KEY (movie_id, person_id)
 );
 
@@ -96,7 +98,7 @@ CREATE TABLE awards (
 CREATE TABLE movie_awards (
     movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
     award_id INT REFERENCES awards(id) ON DELETE CASCADE,
-    awardDate DATE,
+    award_date DATE,
     PRIMARY KEY (movie_id, award_id)
 );
 
@@ -121,9 +123,9 @@ CREATE TABLE movie_platforms (
 CREATE TABLE lists (
     id SERIAL PRIMARY KEY,
     listName VARCHAR(200) NOT NULL,
-    listDescription TEXT,
-    profilePictureList TEXT,
-    nbFilmList INT DEFAULT 0
+    list_description TEXT,
+    profile_pictureList TEXT,
+    nb_film_list INT DEFAULT 0
 );
 
 ----------------lists-movies tables---------------
@@ -139,7 +141,32 @@ CREATE TABLE movie_lists (
 CREATE TABLE users_lists (
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     list_id INT REFERENCES lists(id) ON DELETE CASCADE,
-    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    isPrivate BOOLEAN DEFAULT true,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_private BOOLEAN DEFAULT true,
     PRIMARY KEY (user_id, list_id)
 );
+
+----------------user-movie tabel---------------
+
+CREATE TABLE user_movies (
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
+    watchlist BOOLEAN DEFAULT NULL,
+    grade INT DEFAULT NULL CHECK (if grade != NULL, grade >= 0 AND grade <= 100),
+    PRIMARY KEY (user_id, movie_id)
+)
+
+-------------tag table----------------------
+
+CREATE TABLE tags (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(70) UNIQUE NOT NULL
+);
+
+-------------movie-tags table----------------------
+
+CREATE TABLE movie_tags (
+    movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
+    tag_id INT REFERENCES tags(id) ON DELETE CASCADE,
+    PRIMARY KEY (movie_id, tag_id)
+)
