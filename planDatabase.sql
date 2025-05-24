@@ -1,19 +1,18 @@
-----------------Movies tables---------------
+ ----------------Movies tables---------------
 
 CREATE TABLE movies (
-    id int PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
+    overview TEXT,
     original_title VARCHAR(255),
-    duration INTERVAL,
-    country VARCHAR(20),
-    budget BIGINT,
-    box_office BIGINT, 
-    url_trailer TEXT,
-    url_poster TEXT,
-    screenplay TEXT,
     release_date date,
-    average_rating float CHECK (average_rating >= 0 AND average_rating <= 100),
-    ratings_count INT DEFAULT 0
+    poster_path TEXT,
+    backdrop_path TEXT,
+    budget INT,
+    revenue INT,
+    runtime INT,
+    country VARCHAR(20),
+    url_trailer TEXT,
 );
 
 ----------------User tables---------------
@@ -149,9 +148,10 @@ CREATE TABLE users_lists (
 ----------------user-movie tabel---------------
 
 CREATE TABLE user_movies (
+    id_user_movie BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
-    watchlist BOOLEAN DEFAULT NULL,
+    watchlist VARCHAR(30) DEFAULT 'none',
     grade INT DEFAULT NULL CHECK (if grade != NULL, grade >= 0 AND grade <= 100),
     PRIMARY KEY (user_id, movie_id)
 )
@@ -169,4 +169,4 @@ CREATE TABLE movie_tags (
     movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
     tag_id INT REFERENCES tags(id) ON DELETE CASCADE,
     PRIMARY KEY (movie_id, tag_id)
-)
+)   PRIMARY KEY (movie_id, tag_id)
