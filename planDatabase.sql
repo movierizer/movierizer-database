@@ -61,7 +61,7 @@ CREATE TABLE movie_genres (
 ----------------people tables---------------
 
 CREATE TABLE people (
-    id SERIAL PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     profile_path VARCHAR(200),
     gender INT CHECK (gender IN (0, 1, 2, 3)),
@@ -70,9 +70,10 @@ CREATE TABLE people (
 
 ----------------movies-actors tables---------------
 
-CREATE TABLE movie_actors (
-    movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
-    people_id INT REFERENCES people(id) ON DELETE CASCADE,
+CREATE TABLE people_movies (
+    movie_people_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    movie_id BIGINT REFERENCES movies(id) ON DELETE CASCADE,
+    people_id BIGINT REFERENCES people(id) ON DELETE CASCADE,
     character VARCHAR(200),
     job VARCHAR(200),
     PRIMARY KEY (movie_id, person_id)
