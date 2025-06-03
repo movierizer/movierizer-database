@@ -62,26 +62,19 @@ CREATE TABLE movie_genres (
 
 CREATE TABLE people (
     id SERIAL PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    birth_date DATE,
-    nationality VARCHAR(100)
+    name VARCHAR(100) NOT NULL,
+    profile_path VARCHAR(200),
+    gender INT CHECK (gender IN (0, 1, 2, 3)),
+    know_for_departement VARCHAR(100)
 );
 
 ----------------movies-actors tables---------------
 
 CREATE TABLE movie_actors (
     movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
-    person_id INT REFERENCES people(id) ON DELETE CASCADE,
-    actor_role VARCHAR(100),
-    PRIMARY KEY (movie_id, person_id)
-);
-
-----------------movies-directors tables---------------
-
-CREATE TABLE movie_directors (
-    movie_id INT REFERENCES movies(id) ON DELETE CASCADE,
-    person_id INT REFERENCES people(id) ON DELETE CASCADE,
+    people_id INT REFERENCES people(id) ON DELETE CASCADE,
+    character VARCHAR(200),
+    job VARCHAR(200),
     PRIMARY KEY (movie_id, person_id)
 );
 
